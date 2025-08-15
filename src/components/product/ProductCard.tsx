@@ -1,4 +1,3 @@
-// ProductCard.tsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import type { Product } from "../../type/Products";
@@ -24,8 +23,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onDelete }) => {
   };
 
   const handleEdit = () => {
-    // navigate to ProductForm with state
-    navigate("/product-form", { state: { product } });
+    navigate("/edit-product", { state: { product } });
   };
 
   const handleView = () => {
@@ -33,17 +31,26 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onDelete }) => {
   };
 
   return (
-    <div className="flex flex-col border rounded-2xl shadow-lg p-4 hover:bg-gray-100">
-      <h2 className="text-center text-green-700 text-2xl font-bold bg-gray-100 p-2 rounded">
+    <div className="flex flex-col rounded-2xl shadow-lg p-4 hover:bg-gray-100 transition-all duration-300 w-full sm:max-w-sm md:max-w-md mx-auto">
+      {/* Title */}
+      <h2 className="text-center text-green-700 text-xl sm:text-2xl font-bold bg-gray-100 p-2 rounded">
         {product.title}
       </h2>
+
+      {/* Image */}
       <img
         src={product.thumbnail}
         alt={product.title}
-        className="w-full h-48 object-cover my-2 rounded"
+        className="w-full h-40 sm:h-48 md:h-56 object-cover my-2 rounded"
       />
-      <p className="text-gray-700">{product.description}</p>
-      <div className="flex justify-between mt-2">
+
+      {/* Description */}
+      <p className="text-gray-700 text-sm sm:text-base">
+        {product.description}
+      </p>
+
+      {/* Category + Brand */}
+      <div className="flex flex-col sm:flex-row justify-between mt-2 gap-1 text-sm sm:text-base">
         <span>
           Category: <strong>{product.category}</strong>
         </span>
@@ -51,21 +58,29 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onDelete }) => {
           Brand: <strong>{product.brand}</strong>
         </span>
       </div>
-      <div className="flex justify-between mt-1">
+
+      {/* Price + Rating */}
+      <div className="flex flex-col sm:flex-row justify-between mt-1 text-sm sm:text-base">
         <span className="text-yellow-500 font-bold">
           Price: ${product.price}
         </span>
         <span>Rate: {product.rating}</span>
       </div>
-      <div className="flex gap-2 mt-3">
-        <button className="bg-green-300 px-3 py-1 rounded" onClick={handleEdit}>
+
+      {/* Buttons */}
+      <div className="flex flex-col sm:flex-row gap-2 mt-3">
+        <button
+          className="bg-green-300 px-3 py-1 rounded hover:bg-green-400 transition"
+          onClick={handleEdit}>
           Edit
         </button>
-        <button className="bg-blue-300 px-3 py-1 rounded" onClick={handleView}>
+        <button
+          className="bg-blue-300 px-3 py-1 rounded hover:bg-blue-400 transition"
+          onClick={handleView}>
           View
         </button>
         <button
-          className="bg-red-400 px-3 py-1 rounded text-white"
+          className="bg-red-400 px-3 py-1 rounded text-white hover:bg-red-500 transition"
           onClick={handleDelete}>
           Delete
         </button>

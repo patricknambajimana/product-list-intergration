@@ -10,7 +10,6 @@ const ProductList: React.FC = () => {
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const navigate = useNavigate();
 
-  // Fetch all products or filtered products
   const fetchProducts = async () => {
     try {
       let res;
@@ -20,7 +19,9 @@ const ProductList: React.FC = () => {
         );
         setProducts(res.data.products);
       } else {
-        res = await api.get<{ products: Product[] }>(`/products?sortBy=title&order=${sortOrder}`);
+        res = await api.get<{ products: Product[] }>(
+          `/products?sortBy=title&order=${sortOrder}`
+        );
         setProducts(res.data.products);
       }
     } catch (error) {
@@ -32,22 +33,21 @@ const ProductList: React.FC = () => {
     fetchProducts();
   }, [searchTerm, sortOrder]);
 
-  // Remove product from list after delete
   const handleDelete = (id: number) => {
     setProducts(products.filter((p) => p.id !== id));
   };
 
-  // Update product in list after edit
   const handleUpdate = (updated: Product) => {
     setProducts(products.map((p) => (p.id === updated.id ? updated : p)));
   };
 
   return (
-    <div className="p-5">
-      <div className="flex flex-col md:flex-row gap-4 justify-center items-center p-20">
+    <div className="p-4 md:p-6 mt-20">
+      {/* Controls Section */}
+      <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center items-center mb-10">
         <button
           onClick={() => navigate("/add-product")}
-          className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition">
+          className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition w-full sm:w-auto">
           Add Product
         </button>
 
@@ -56,20 +56,20 @@ const ProductList: React.FC = () => {
           placeholder="Search product..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="border border-gray-300 rounded p-2 w-full md:w-64 focus:outline-none focus:ring-2 focus:ring-green-400"
+          className="border border-gray-300 rounded p-2 w-full sm:w-64 focus:outline-none focus:ring-2 focus:ring-green-400"
         />
 
         <select
           value={sortOrder}
           onChange={(e) => setSortOrder(e.target.value as "asc" | "desc")}
-          className="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-green-400"
-        >
+          className="border border-gray-300 rounded p-2 w-full sm:w-auto focus:outline-none focus:ring-2 focus:ring-green-400">
           <option value="asc">Title Ascending</option>
           <option value="desc">Title Descending</option>
         </select>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 pl-20 pr-20">
+      {/* Product Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {products.length ? (
           products.map((p) => (
             <ProductCard
