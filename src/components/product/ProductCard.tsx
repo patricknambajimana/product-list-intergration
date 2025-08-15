@@ -1,52 +1,74 @@
+// ProductCard.tsx
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import type { Product } from "../../type/Products";
+import api from "../../App/api";
 
-export interface productprops {
+interface ProductCardProps {
   product: Product;
+  onDelete?: (id: number) => void;
+  onUpdate?: (updated: Product) => void;
 }
 
-const ProductCard: React.FC<productprops> = ({ product }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, onDelete }) => {
+  const navigate = useNavigate();
+
+  const handleDelete = async () => {
+    if (!confirm("Are you sure you want to delete this product?")) return;
+    try {
+      await api.delete(`/products/${product.id}`);
+      onDelete?.(product.id);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleEdit = () => {
+    // navigate to ProductForm with state
+    navigate("/product-form", { state: { product } });
+  };
+
+  const handleView = () => {
+    navigate(`/products/${product.id}`);
+  };
+
   return (
-    <div className="flex flex-col text-2xl border-0 rounded-2xl shadow-2xl w-full p-4 hover:bg-gray-200 relative top-30">
-      <h1 className="text-center w-full  text-green-700 bg-neutral-100 p-4 ">
+    <div className="flex flex-col border rounded-2xl shadow-lg p-4 hover:bg-gray-100">
+      <h2 className="text-center text-green-700 text-2xl font-bold bg-gray-100 p-2 rounded">
         {product.title}
-      </h1>
-      <div className="w-full place-items-center ">
-        <img src={product.thumbnail} className="w-55  " />
-      </div>
-      <span className="text-xl p-5">{product.description}</span>
-      <div className="flex justify-between space-y-2 mr-4 ml-5">
-        <span className="text-1xl capitalize">
-          categoty:<strong className="text-xl">{product.category}</strong>
+      </h2>
+      <img
+        src={product.thumbnail}
+        alt={product.title}
+        className="w-full h-48 object-cover my-2 rounded"
+      />
+      <p className="text-gray-700">{product.description}</p>
+      <div className="flex justify-between mt-2">
+        <span>
+          Category: <strong>{product.category}</strong>
         </span>
-        <span className="font-extrabold text-1xl capitalize">
-          <strong className="text-xl">{product.brand}</strong>
-        </span>
-      </div>
-      <div className="flex justify-between space-y-2 mr-4 ml-5">
-        <span className="font-extrabold text-xl capitalize mr-4 ml-5 ">
-          price:<strong className="text-yellow-400">${product.price}</strong>
-        </span>
-        <span className="font-extrabold text-xl capitalize mr-4 ml-5">
-          rate:{product.rating}
+        <span>
+          Brand: <strong>{product.brand}</strong>
         </span>
       </div>
-      <div className="flex gap-5 ml-2">
-        <div className=" capitalize w-25 text-center rounded bg-neutral-300 text-2xl text-green-600 ">
-          <button type="button" className="p-2 capitalize">
-            edit
-          </button>
-        </div>
-        <div className=" capitalize w-25 text-center rounded bg-neutral-300 text-2xl text-green-600 ">
-          <button type="button" className="p-2 capitalize">
-            view
-          </button>
-        </div>
-        <div className="text-red-500 w-25 text-center rounded bg-neutral-300 capitalize">
-          <button type="button" className="p-2 capitalize">
-            delete
-          </button>
-        </div>
+      <div className="flex justify-between mt-1">
+        <span className="text-yellow-500 font-bold">
+          Price: ${product.price}
+        </span>
+        <span>Rate: {product.rating}</span>
+      </div>
+      <div className="flex gap-2 mt-3">
+        <button className="bg-green-300 px-3 py-1 rounded" onClick={handleEdit}>
+          Edit
+        </button>
+        <button className="bg-blue-300 px-3 py-1 rounded" onClick={handleView}>
+          View
+        </button>
+        <button
+          className="bg-red-400 px-3 py-1 rounded text-white"
+          onClick={handleDelete}>
+          Delete
+        </button>
       </div>
     </div>
   );

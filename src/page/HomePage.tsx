@@ -1,12 +1,10 @@
-import AsideBar from "../components/product/AsideBar";
-import ProductList from "../components/product/ProductsList";
+import Navbar from "../components/product/NavBar";
+import { Outlet } from "react-router-dom";
 const HomePage: React.FC = () => {
   return (
-    <div className="">
-      <AsideBar />
-      <div className="absolute top-0 ml-80 ">
-        <ProductList />
-      </div>
+    <div className="flex">
+      <Navbar />
+        <Outlet />
     </div>
   );
 };
