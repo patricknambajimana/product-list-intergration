@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import api from "../App/api";
+import { ArrowBigLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface Product {
   id: number;
@@ -15,6 +17,7 @@ const CategoryPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("smartphones");
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const categories = [
     "smartphones",
@@ -38,6 +41,10 @@ const CategoryPage: React.FC = () => {
     "motorcycle",
     "lighting",
   ];
+
+  const goBack = () => {
+    navigate("/");
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -64,7 +71,13 @@ const CategoryPage: React.FC = () => {
 
   return (
     <div className="px-4 md:px-8 lg:px-16 mt-24">
-      <h1 className="text-3xl font-bold mb-6 text-green-700 text-center md:text-left">
+      <div className="text-center text-green-700">
+        <ArrowBigLeft
+          onClick={goBack}
+          className="size-15 outline-2 outline-green-400 rounded-lg hover:bg-green-200 animate-bounce p-3 "
+        />
+      </div>
+      <h1 className="text-3xl font-bold mb-6 text-green-700 text-center md:text-center">
         {selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}
       </h1>
 
@@ -74,7 +87,7 @@ const CategoryPage: React.FC = () => {
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
-          className="border p-2 rounded focus:ring-2 focus:ring-green-400 w-full sm:w-auto">
+          className="border border-green-600 focus:outline-green-600 p-2 rounded focus:ring-2 focus:ring-green-400 w-full sm:w-auto">
           {categories.map((cat) => (
             <option key={cat} value={cat}>
               {cat.charAt(0).toUpperCase() + cat.slice(1)}
@@ -89,11 +102,11 @@ const CategoryPage: React.FC = () => {
           products.map((product) => (
             <div
               key={product.id}
-              className="border rounded-lg p-4 hover:bg-green-50 shadow flex flex-col">
+              className=" rounded-lg p-4 hover:bg-gray-100 shadow-md flex flex-col">
               <img
                 src={product.thumbnail}
                 alt={product.title}
-                className="w-full h-48 object-cover mb-3 rounded"
+                className="w-full h-40 sm:h-48 md:h-56 object-cover my-2 rounded"
               />
               <h2 className="text-lg font-semibold mb-1">{product.title}</h2>
               <p className="text-gray-700 text-sm flex-1">

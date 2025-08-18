@@ -2,6 +2,9 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import type { Product } from "../../type/Products";
 import api from "../../App/api";
+import { Eye } from "lucide-react";
+import { SquarePen } from "lucide-react";
+import { Trash } from "lucide-react";
 
 interface ProductCardProps {
   product: Product;
@@ -70,18 +73,29 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onDelete }) => {
       {/* Buttons */}
       <div className="flex flex-col sm:flex-row gap-2 mt-3">
         <button
-          className="bg-green-300 px-3 py-1 rounded hover:bg-green-400 transition"
+          className="flex gap-1  py-4 px-3 bg-green-300/80  rounded hover:bg-green-400 transition"
           onClick={handleEdit}>
-          Edit
+          <span>
+            <SquarePen />
+          </span>
+          <span>Edit</span>
         </button>
         <button
-          className="bg-blue-300 px-3 py-1 rounded hover:bg-blue-400 transition"
+          className="flex gap-1  py-4 px-3 bg-gray-300/80  rounded hover:bg-gray-400 transition"
           onClick={handleView}>
+          <span>
+            {" "}
+            <Eye />
+          </span>
           View
         </button>
         <button
-          className="bg-red-400 px-3 py-1 rounded text-white hover:bg-red-500 transition"
+          className="flex gap-1  py-4 px-3 bg-red-400/80  rounded hover:bg-red-400 transition"
           onClick={handleDelete}>
+          <span>
+            {" "}
+            <Trash />
+          </span>
           Delete
         </button>
       </div>

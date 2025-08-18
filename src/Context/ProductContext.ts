@@ -19,7 +19,8 @@
 //   const [product, setProduct] = useState<Product | undefined>(undefined);
 
 //   return (
-//     <ProductContext.Provider value={{ product, setProduct }}>
+//     <ProductContext.Provider value={product, setProduct }>
+
 //       {children}
 //     </ProductContext.Provider>
 //   );

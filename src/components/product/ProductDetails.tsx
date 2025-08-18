@@ -65,7 +65,9 @@ const ProductDetails: React.FC = () => {
                 Rating: {product.rating}
               </span>
             </div>
-            <p className="mt-2 text-gray-600">Stock: {product.stock}</p>
+            <div>
+              <span className="mt-2 text-gray-600">Stock: {product.stock}</span>
+            </div>
           </div>
         </div>
       </div>
