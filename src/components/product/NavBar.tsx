@@ -11,6 +11,7 @@ import {
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+ 
 
   const links = [
     { name: "Products", path: "/" },
@@ -21,7 +22,6 @@ const Navbar: React.FC = () => {
   const gotoCart = () => {
     navigate("cart");
   };
-
   return (
     <nav className="bg-green-100 text-green-900 fixed top-0 left-0 right-0 z-20 shadow-md p-4">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
@@ -55,8 +55,13 @@ const Navbar: React.FC = () => {
           ))}
 
           <div className="flex gap-4 mt-3 md:mt-0">
-            <button type="button" onClick={gotoCart}>
-              <ShoppingCart className="size-7 hover:text-green-400" />
+            <button type="button" onClick={gotoCart} className="flex">
+              <div className="flex">
+                <ShoppingCart className="size-7 hover:text-green-400" />
+                <span className="rounded-full bg-red-600/80 text-center-safe text-white text-sm relative bottom-2 right-2 pb-2 size-5">
+                  10
+                </span>
+              </div>
             </button>
             <button>
               <MessageSquareDot className="size-7 hover:text-green-400" />

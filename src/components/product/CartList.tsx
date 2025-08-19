@@ -36,6 +36,7 @@ const CartList: React.FC<Cart> = () => {
       setError("Failed to delete cart");
     }
   };
+
   if (loading) return <p className="text-gray-500">Loading carts...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
 
@@ -47,7 +48,7 @@ const CartList: React.FC<Cart> = () => {
         {carts.map((cart) => (
           <div
             key={cart.id}
-            className="bg-white shadow-lg rounded-xl p-4 border hover:shadow-xl transition">
+            className="bg-white shadow-lg rounded-xl p-4  hover:bg-neutral-200 transition">
             <h2 className="text-lg font-semibold mb-3">Cart #{cart.id}</h2>
             <ul className="space-y-2">
               {cart.products.map((product) => (
@@ -68,10 +69,17 @@ const CartList: React.FC<Cart> = () => {
               </p>
             </div>
             <div className="flex text-xm gap-4 text-center">
-              <button type="button" onClick={()=>{removeCart}} className="capitalize border-none  bg-red-400 p-3 rounded">
-                delete
+              <button
+                type="button"
+                onClick={() => removeCart(cart.id)}
+                className="capitalize border-none text-white bg-red-300 rounded w-20 h-10 justify-center items-center hover:bg-red-500">
+                Remove
               </button>
-              <button onClick={()=>{deleteCart}} className="capitalize border-none bg-green-400 p-3 rounded">edit</button>
+              <button
+                onClick={() => deleteCart(cart.id)}
+                className="capitalize border-none text-white bg-green-300 rounded w-20 h-10 justify-center items-center hover:bg-green-500">
+                update
+              </button>
             </div>
           </div>
         ))}

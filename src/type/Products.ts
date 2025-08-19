@@ -10,6 +10,8 @@ export interface Product {
   stock?: string;
   quantity?: string;
   total?:number
+  weight?:number
+  discountPercentage?:number
 }
 export interface Cart {
   id: number;

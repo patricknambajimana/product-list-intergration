@@ -74,7 +74,7 @@ const CategoryPage: React.FC = () => {
       <div className="text-center text-green-700">
         <ArrowBigLeft
           onClick={goBack}
-          className="size-15 outline-2 outline-green-400 rounded-lg hover:bg-green-200 animate-bounce p-3 "
+          className="size-15 outline-2 outline-green-400 rounded-full hover:bg-green-200 animate-bounce p-3 "
         />
       </div>
       <h1 className="text-3xl font-bold mb-6 text-green-700 text-center md:text-center">

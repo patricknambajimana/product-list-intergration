@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Product } from "../../type/Products";
 import api from "../../App/api";
 import { Eye } from "lucide-react";
 import { SquarePen } from "lucide-react";
 import { Trash } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 
 interface ProductCardProps {
   product: Product;
@@ -32,6 +33,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onDelete }) => {
   const handleView = () => {
     navigate(`/products/${product.id}`);
   };
+
 
   return (
     <div className="flex flex-col rounded-2xl shadow-lg p-4 hover:bg-gray-100 transition-all duration-300 w-full sm:max-w-sm md:max-w-md mx-auto">
@@ -73,31 +75,32 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onDelete }) => {
       {/* Buttons */}
       <div className="flex flex-col sm:flex-row gap-2 mt-3">
         <button
-          className="flex gap-1  py-4 px-3 bg-green-300/80  rounded hover:bg-green-400 transition"
+          className="flex gap-1 text-white  bg-neutral-500  rounded hover:bg-neutral-400 transition w-20 h-10 justify-center items-center"
           onClick={handleEdit}>
           <span>
-            <SquarePen />
+            <SquarePen className="size-5" />
           </span>
           <span>Edit</span>
         </button>
         <button
-          className="flex gap-1  py-4 px-3 bg-gray-300/80  rounded hover:bg-gray-400 transition"
+          className="flex gap-1 text-white  py-4 px-3 bg-gray-500  rounded hover:bg-gray-400 transition  w-20 h-10 justify-center items-center"
           onClick={handleView}>
           <span>
             {" "}
-            <Eye />
+            <Eye className="size-5" />
           </span>
           View
         </button>
         <button
-          className="flex gap-1  py-4 px-3 bg-red-400/80  rounded hover:bg-red-400 transition"
+          className="flex gap-1 text-white  py-4 px-3 bg-red-500 rounded hover:bg-red-300 transition  w-20 h-10 justify-center items-center"
           onClick={handleDelete}>
           <span>
             {" "}
-            <Trash />
+            <Trash className="size-5" />
           </span>
           Delete
         </button>
+        
       </div>
     </div>
   );

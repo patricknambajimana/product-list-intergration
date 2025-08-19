@@ -65,8 +65,17 @@ const ProductDetails: React.FC = () => {
                 Rating: {product.rating}
               </span>
             </div>
-            <div>
+            <div className="flex flex-col text-xl">
               <span className="mt-2 text-gray-600">Stock: {product.stock}</span>
+              <span className="mt-2 text-gray-600">
+                quantity: {product.quantity}
+              </span>
+              <span className="mt-2 text-gray-600 ">
+                weight: {product.weight}
+              </span>
+              <span className="mt-2 text-gray-600">
+                discountPercentage:{product.discountPercentage}
+              </span>
             </div>
           </div>
         </div>
