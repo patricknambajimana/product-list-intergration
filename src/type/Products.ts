@@ -8,7 +8,7 @@ export interface Product {
   brand: string;
   thumbnail: string;
   stock?: string;
-  quantity?: string;
+  quantity?: number;
   total?:number
   weight?:number
   discountPercentage?:number

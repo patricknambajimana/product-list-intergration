@@ -43,7 +43,7 @@ const CategoryPage: React.FC = () => {
   ];
 
   const goBack = () => {
-    navigate("/");
+    navigate("/products");
   };
 
   useEffect(() => {

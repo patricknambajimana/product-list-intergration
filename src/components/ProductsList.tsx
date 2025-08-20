@@ -6,7 +6,7 @@ const ProductList: React.FC = () => {
   const { products, deleteProduct } = useProducts();
 
   const handleDelete = (id: number) => {
-    deleteProduct(id); // context handles state update
+    deleteProduct(id);
   };
 
   return (

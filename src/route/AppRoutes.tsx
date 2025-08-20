@@ -5,6 +5,7 @@ import CategoryPage from "../page/CategoryPage";
 import CartPage from "../page/CartPage";
 import ProductDetails from "../components/ProductDetails";
 import ProductForm from "../components/ProductForm";
+
 const AppRoutes = () => {
   return (
     <Routes>
@@ -13,7 +14,7 @@ const AppRoutes = () => {
       <Route path="categories" element={<CategoryPage />} />
       <Route path="products/:id" element={<ProductDetails />} />
       <Route path="add-product" element={<ProductForm />} />
-      <Route path="edit-product/:id" element={<ProductForm />} />
+      <Route path="edit-product" element={<ProductForm />} />
       <Route path="cart" element={<CartPage />} />
       <Route
         path="*"

@@ -6,7 +6,7 @@ const ProductPage: React.FC = () => {
   return (
     <div>
       <Navbar />
-      <div className="mt-72 p-4 md:p-6">
+      <div className="mt-50 p-4 md:p-6">
         <ProductList />
       </div>
     </div>

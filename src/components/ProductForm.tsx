@@ -41,13 +41,17 @@ const ProductForm: React.FC = () => {
     e.preventDefault();
     try {
       if (editingProduct) {
-        await updateProduct(editingProduct.id, formData);
+        await updateProduct(editingProduct.id, {
+          ...formData,
+          rating: editingProduct.rating,
+        });
       } else {
         await addProduct(formData);
       }
-      navigate("/");
+      navigate("/products"); // back to product list
     } catch (error) {
       console.error("Error submitting product:", error);
+      alert("Failed to submit product.");
     }
   };
 
@@ -114,15 +118,13 @@ const ProductForm: React.FC = () => {
           <div className="flex justify-between mt-6">
             <button
               type="submit"
-              className="bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700 transition"
-            >
+              className="bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700 transition">
               {editingProduct ? "Update Product" : "Add Product"}
             </button>
             <button
               type="button"
-              onClick={() => navigate("/")}
-              className="bg-gray-400 text-white px-5 py-2 rounded hover:bg-gray-500 transition"
-            >
+              onClick={() => navigate("/products")}
+              className="bg-gray-400 text-white px-5 py-2 rounded hover:bg-gray-500 transition">
               Cancel
             </button>
           </div>

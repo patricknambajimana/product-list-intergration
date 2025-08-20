@@ -1,4 +1,3 @@
-// EditProduct.tsx
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import type { Product } from "../type/Products";
@@ -7,10 +6,10 @@ import { useProducts } from "../hooks/useProducts";
 const EditProduct: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { updateProduct } = useProducts(); // use context
+  const { updateProduct } = useProducts(); // context API
   const editingProduct = location.state?.product as Product | undefined;
 
-  const [product, setProduct] = useState<Omit<Product, "id" | "rating">>({
+  const [formData, setFormData] = useState<Omit<Product, "id" | "rating">>({
     title: "",
     description: "",
     category: "",
@@ -19,11 +18,12 @@ const EditProduct: React.FC = () => {
     thumbnail: "",
   });
 
+  // Pre-fill form when editing
   useEffect(() => {
     if (editingProduct) {
       const { title, description, category, price, brand, thumbnail } =
         editingProduct;
-      setProduct({ title, description, category, price, brand, thumbnail });
+      setFormData({ title, description, category, price, brand, thumbnail });
     }
   }, [editingProduct]);
 
@@ -31,7 +31,7 @@ const EditProduct: React.FC = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setProduct((prev) => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: name === "price" ? Number(value) : value,
     }));
@@ -42,11 +42,12 @@ const EditProduct: React.FC = () => {
     if (!editingProduct) return;
 
     try {
-      const updatedProduct = { ...product, rating: editingProduct.rating };
-      await updateProduct(editingProduct.id, updatedProduct);
-      navigate("/"); // go back to product list
+      const updatedData = { ...formData, rating: editingProduct.rating };
+      await updateProduct(editingProduct.id, updatedData);
+      navigate("/products"); // go back to product list
     } catch (err) {
       console.error("Update failed:", err);
+      alert("Failed to update product.");
     }
   };
 
@@ -61,7 +62,7 @@ const EditProduct: React.FC = () => {
             type="text"
             name="title"
             placeholder="Product Title"
-            value={product.title}
+            value={formData.title}
             onChange={handleChange}
             className="border p-2 w-full rounded focus:ring-2 focus:ring-green-400"
             required
@@ -69,7 +70,7 @@ const EditProduct: React.FC = () => {
           <textarea
             name="description"
             placeholder="Description"
-            value={product.description}
+            value={formData.description}
             onChange={handleChange}
             className="border p-2 w-full rounded focus:ring-2 focus:ring-green-400"
             required
@@ -78,7 +79,7 @@ const EditProduct: React.FC = () => {
             type="text"
             name="category"
             placeholder="Category"
-            value={product.category}
+            value={formData.category}
             onChange={handleChange}
             className="border p-2 w-full rounded focus:ring-2 focus:ring-green-400"
             required
@@ -87,7 +88,7 @@ const EditProduct: React.FC = () => {
             type="number"
             name="price"
             placeholder="Price"
-            value={product.price}
+            value={formData.price}
             onChange={handleChange}
             className="border p-2 w-full rounded focus:ring-2 focus:ring-green-400"
             required
@@ -96,7 +97,7 @@ const EditProduct: React.FC = () => {
             type="text"
             name="brand"
             placeholder="Brand"
-            value={product.brand}
+            value={formData.brand}
             onChange={handleChange}
             className="border p-2 w-full rounded focus:ring-2 focus:ring-green-400"
             required
@@ -105,7 +106,7 @@ const EditProduct: React.FC = () => {
             type="text"
             name="thumbnail"
             placeholder="Thumbnail URL"
-            value={product.thumbnail}
+            value={formData.thumbnail}
             onChange={handleChange}
             className="border p-2 w-full rounded focus:ring-2 focus:ring-green-400"
             required
@@ -118,7 +119,7 @@ const EditProduct: React.FC = () => {
             </button>
             <button
               type="button"
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/products")}
               className="bg-gray-400 text-white px-5 py-2 rounded hover:bg-gray-500 transition">
               Cancel
             </button>

@@ -1,61 +1,52 @@
-import React, { useEffect } from "react";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useProducts } from "../hooks/useProducts";
-import { Trash } from "lucide-react";
+import CartItem from "./CartItem";
+import CartSummary from "./CartSummary";
 
 const AddCart: React.FC = () => {
-  const { carts, fetchCarts, deleteCart } = useProducts();
-
-  // Fetch cart items on mount
-  useEffect(() => {
-    fetchCarts();
-  }, []);
-
-  const handleRemove = (cartId: number) => {
-    deleteCart(cartId);
-  };
+  const navigate = useNavigate();
+  const { carts, deleteCart } = useProducts()!;
 
   if (!carts || carts.length === 0)
-    return <p className="text-gray-500 mt-6 text-center">Your cart is empty.</p>;
+    return (
+      <p className="text-gray-500 mt-6 text-center">No carts available.</p>
+    );
+
+  const cart = carts[0]; // show first cart
+
+  const totalItems = cart.products.reduce(
+    (sum, p) => sum + (Number(p.quantity) || 0),
+    0
+  );
+  const subtotal = cart.total;
+  const discountedTotal = cart.discountedTotal;
 
   return (
-    <div className="container mx-auto mt-10 p-4">
-      <h2 className="text-2xl font-bold mb-4 text-center text-green-700">My Cart</h2>
+    <div className="container mx-auto mt-20 p-4 flex flex-col md:flex-row gap-6">
+      <div className="flex-1 bg-white p-4 rounded shadow-md">
+        <h1 className="text-2xl font-bold mb-6 text-center text-green-700">
+          Your Cart
+        </h1>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {carts.map((cart) => (
-          <div
-            key={cart.id}
-            className="bg-white shadow-lg rounded-xl p-4 hover:bg-neutral-100 transition"
-          >
-            <h3 className="text-lg font-semibold mb-2">Cart #{cart.id}</h3>
-            <ul className="space-y-2">
-              {cart.products.map((product) => (
-                <li
-                  key={product.id}
-                  className="flex justify-between items-center text-sm border-b pb-1"
-                >
-                  <span>
-                    {product.title} ({product.quantity} × ${product.price})
-                  </span>
-                  <span className="font-semibold">${product.total}</span>
-                </li>
-              ))}
-            </ul>
-            <div className="mt-2 border-t pt-2 text-right">
-              <p className="text-gray-600">Subtotal: ${cart.total}</p>
-              <p className="font-bold text-green-700">Discounted: ${cart.discountedTotal}</p>
-            </div>
-            <div className="flex justify-center mt-3">
-              <button
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition flex items-center gap-1"
-                onClick={() => handleRemove(cart.id)}
-              >
-                <Trash className="w-4 h-4" /> Remove Cart
-              </button>
-            </div>
-          </div>
+        {/* Back to Products button */}
+        <button
+          className="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          onClick={() => navigate("/products")}>
+          &larr; Back to Products
+        </button>
+
+        {cart.products.map((product) => (
+          <CartItem key={product.id} product={product} cartId={cart.id} />
         ))}
       </div>
+
+      <CartSummary
+        totalItems={totalItems}
+        subtotal={subtotal}
+        discountedTotal={discountedTotal}
+        onDeleteCart={() => deleteCart(cart.id)}
+      />
     </div>
   );
 };
