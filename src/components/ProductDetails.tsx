@@ -1,24 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import api from "../../App/api";
-import type { Product } from "../../type/Products";
+import { useProducts } from "../hooks/useProducts";
+import type { Product } from "../type/Products";
 
 const ProductDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { products } = useProducts(); // get products from context
+
   const [product, setProduct] = useState<Product | null>(null);
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const res = await api.get<Product>(`/products/${id}`);
-        setProduct(res.data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchProduct();
-  }, [id]);
+    if (!id) return;
+
+    const foundProduct = products.find((p) => p.id === Number(id));
+    setProduct(foundProduct || null);
+  }, [id, products]);
 
   if (!product)
     return (
@@ -32,7 +29,8 @@ const ProductDetails: React.FC = () => {
       <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-xl">
         <button
           onClick={() => navigate(-1)}
-          className="mb-6 px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500 transition">
+          className="mb-6 px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500 transition"
+        >
           Back
         </button>
 
@@ -68,13 +66,13 @@ const ProductDetails: React.FC = () => {
             <div className="flex flex-col text-xl">
               <span className="mt-2 text-gray-600">Stock: {product.stock}</span>
               <span className="mt-2 text-gray-600">
-                quantity: {product.quantity}
-              </span>
-              <span className="mt-2 text-gray-600 ">
-                weight: {product.weight}
+                Quantity: {product.quantity}
               </span>
               <span className="mt-2 text-gray-600">
-                discountPercentage:{product.discountPercentage}
+                Weight: {product.weight}
+              </span>
+              <span className="mt-2 text-gray-600">
+                Discount: {product.discountPercentage}%
               </span>
             </div>
           </div>

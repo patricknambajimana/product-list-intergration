@@ -1,12 +1,13 @@
-// ProductForm.tsx
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import api from "../../../App/api";
-import type { Product } from "../../../type/Products";
+import type { Product } from "../type/Products";
+import { useProducts } from "../hooks/useProducts";
 
 const ProductForm: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { addProduct, updateProduct } = useProducts();
+
   const editingProduct = location.state?.product as Product | undefined;
 
   const [formData, setFormData] = useState<Omit<Product, "id" | "rating">>({
@@ -40,20 +41,19 @@ const ProductForm: React.FC = () => {
     e.preventDefault();
     try {
       if (editingProduct) {
-        const updatedProduct = { ...formData, rating: editingProduct.rating };
-        await api.put(`/products/${editingProduct.id}`, updatedProduct);
+        await updateProduct(editingProduct.id, formData);
       } else {
-        await api.post("/products/add", formData);
+        await addProduct(formData);
       }
       navigate("/");
     } catch (error) {
-      console.error(error);
+      console.error("Error submitting product:", error);
     }
   };
 
   return (
     <div className="flex items-center justify-center h-screen w-screen bg-green-50">
-  <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-3xl font-bold mb-6 text-center text-green-700">
           {editingProduct ? "Edit Product" : "Add New Product"}
         </h2>
@@ -114,13 +114,15 @@ const ProductForm: React.FC = () => {
           <div className="flex justify-between mt-6">
             <button
               type="submit"
-              className="bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700 transition">
+              className="bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700 transition"
+            >
               {editingProduct ? "Update Product" : "Add Product"}
             </button>
             <button
               type="button"
               onClick={() => navigate("/")}
-              className="bg-gray-400 text-white px-5 py-2 rounded hover:bg-gray-500 transition">
+              className="bg-gray-400 text-white px-5 py-2 rounded hover:bg-gray-500 transition"
+            >
               Cancel
             </button>
           </div>

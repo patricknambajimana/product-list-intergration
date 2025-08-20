@@ -1,15 +1,15 @@
 // EditProduct.tsx
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import api from "../../App/api"; // Axios instance
-import type { Product } from "../../type/Products";
+import type { Product } from "../type/Products";
+import { useProducts } from "../hooks/useProducts";
 
 const EditProduct: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { updateProduct } = useProducts(); // use context
   const editingProduct = location.state?.product as Product | undefined;
 
-  // Use product props directly from ProductCard
   const [product, setProduct] = useState<Omit<Product, "id" | "rating">>({
     title: "",
     description: "",
@@ -39,13 +39,12 @@ const EditProduct: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!editingProduct) return; // safety check
+    if (!editingProduct) return;
 
     try {
-      // Update product using PUT
       const updatedProduct = { ...product, rating: editingProduct.rating };
-      await api.patch(`/products/${editingProduct.id}`, updatedProduct);
-      navigate("/"); // go back to list
+      await updateProduct(editingProduct.id, updatedProduct);
+      navigate("/"); // go back to product list
     } catch (err) {
       console.error("Update failed:", err);
     }
