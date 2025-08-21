@@ -1,7 +1,7 @@
 import React from "react";
-import type { Product } from "../type/Products";
 import { Trash } from "lucide-react";
 import { useProducts } from "../hooks/useProducts";
+import type { Product } from "../type/Products";
 
 interface CartItemProps {
   product: Product;
@@ -9,10 +9,13 @@ interface CartItemProps {
 }
 
 const CartItem: React.FC<CartItemProps> = ({ product, cartId }) => {
-  const { removeCartItem } = useProducts()!;
+  const { removeCartItem, addToCart } = useProducts();
 
-  const handleRemove = () => {
-    removeCartItem(cartId, product.id);
+  const handleRemove = () => removeCartItem(cartId, product.id);
+
+  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const quantity = parseInt(e.target.value);
+    if (quantity > 0) addToCart(cartId, { id: product.id, quantity });
   };
 
   return (
@@ -26,7 +29,14 @@ const CartItem: React.FC<CartItemProps> = ({ product, cartId }) => {
         <div>
           <h3 className="font-semibold">{product.title}</h3>
           <p className="text-gray-600">
-            {product.quantity} × ${product.price}
+            ${product.price} ×{" "}
+            <input
+              type="number"
+              min={1}
+              value={product.quantity}
+              onChange={handleQuantityChange}
+              className="w-12 border rounded px-1"
+            />
           </p>
         </div>
       </div>
